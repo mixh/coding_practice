@@ -23,7 +23,12 @@ public class LC438 {
         int startWindow = 0;
         for(int endWindow = 0; endWindow < p.length(); endWindow++){
             pMap.put(p.charAt(endWindow), pMap.getOrDefault(p.charAt(endWindow), 0)+1);
-            
+
+
+            if(endWindow >= s.length() - 1){
+
+            }
+
         }
 
         return ans;
