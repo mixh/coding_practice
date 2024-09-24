@@ -27,15 +27,34 @@ public class LC438 {
 
             if(endWindow >= s.length() - 1){
 
+                if(matches(sMap, pMap)){
+                    ans.add(endWindow-s.length()+1);
+                }
+
+                pMap.put(p.charAt(startWindow), pMap.get(p.charAt(startWindow))-1);
+                if(pMap.get(p.charAt(startWindow)) == 0){
+                    pMap.remove(p.charAt(startWindow));
+                }
+                startWindow++;
             }
 
         }
 
         return ans;
 
+
     }
+        public static boolean matches(HashMap<Character, Integer> s1Map, HashMap<Character, Integer> s2Map ){
+        for(char x : s1Map.keySet()){
+            if(s1Map.get(x) - s2Map.getOrDefault(x, -1) != 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
-        String s = "cbaebabacd", p = "abc";
+        String s = "abab", p = "ab";
         System.out.println(LC438.findAnagrams(s, p));
     }
 }
