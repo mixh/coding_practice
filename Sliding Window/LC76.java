@@ -6,46 +6,53 @@ import java.util.HashMap;
 
 public class LC76 {
     public static String minWindow(String s, String t){
+
         HashMap<Character, Integer> tMap = new HashMap<>();
         HashMap<Character, Integer> windowMap = new HashMap<>();
-
-        for(int i = 0; i< t.length(); i++){
-            tMap.put(t.charAt(i), tMap.getOrDefault(t.charAt(i), 0)+1);
+        
+        for(char x : t.toCharArray()){
+            tMap.put(x, tMap.getOrDefault(x, 0)+1);
         }
 
         int left = 0;
         int right = 0;
-        int count = 0;
-        int minLength = Integer.MAX_VALUE;
-        int minStart = 0;
+        int count = 0; // keep count of characters covered by window
+        int minWindow = Integer.MAX_VALUE;
+        int startWindow = 0; // pointer where the window starts
 
-        while(right < s.length()){
-            char currentChar = s.charAt(right);
-            windowMap.put(currentChar, windowMap.getOrDefault(currentChar, 0)+1);
+        while (right < s.length()){
+            char rightChar = s.charAt(right);
+            windowMap.put(rightChar,windowMap.getOrDefault(rightChar,0)+1);
 
-            if(tMap.containsKey(currentChar) && windowMap.get(currentChar) <= tMap.get(currentChar)){
+            if(tMap.containsKey(rightChar) && windowMap.get(rightChar) <= tMap.get(rightChar)){
                 count++;
             }
+            
+                            while(count == t.length()){
+                                
+                                if(minWindow > right-left+1){
+                                    minWindow = right - left + 1;
+                                    startWindow = left;
+                                }
+            
+                                char leftChar = s.charAt(left);
+                                windowMap.put(leftChar, windowMap.get(leftChar)-1);
+            
+                                if(tMap.containsKey(leftChar) && windowMap.get(leftChar) < tMap.get(leftChar)){
+                                    count--;
+                                }
+                                left++;
+                            }
 
-            while(count == t.length()){
-                if(minLength > right - left + 1){
-                    minLength = right - left + 1;
-                    minStart = left;
-                }
-
-                char leftChar = s.charAt(left);
-                windowMap.put(leftChar, windowMap.get(leftChar)-1);
-                if(tMap.containsKey(leftChar) && windowMap.get(leftChar) < tMap.get(leftChar)){
-                    count--;
-                }
-                left++;
-            }
             right++;
         }
-        if (minLength == Integer.MAX_VALUE){
+
+        if(minWindow == Integer.MAX_VALUE){
             return "";
         }
-        return s.substring(minStart, minStart + minLength);
+
+        return s.substring(startWindow, startWindow+minWindow);
+
     }
 
     public static void main(String[] args) {
