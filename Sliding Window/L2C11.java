@@ -1,4 +1,3 @@
-
 // You are given a string s and an array of strings words of the same length. Return all starting indices of 
 // substring(s) in s that is a concatenation of each word in words exactly once, in any order, and without any intervening characters.
 
@@ -11,36 +10,42 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class LC11 {
+public class L2C11 {
     public static List<Integer> findSubstring(String s, String[] words) {
-        final HashMap<String, Integer> counts = new HashMap<>();
 
-        for (final String word : words) {
-            
-            counts.put(word, counts.getOrDefault(word, 0) + 1);
+        HashMap<String, Integer> wordsMap = new HashMap<>();
+        for(String x : words){
+            wordsMap.put(x, wordsMap.getOrDefault(x, 0)+1);
         }
 
-        final List<Integer> indexes = new ArrayList<>();
-        final int StringLength = s.length(), arrayLength = words.length, Charcount = words[0].length();
-        for (int i = 0; i < StringLength - arrayLength * Charcount + 1; i++) {
-            final HashMap<String, Integer> seen = new HashMap<>();
+        ArrayList<Integer> indexes = new ArrayList<>();
+
+        int wordsLength = words.length;
+        int num = words[0].length();
+        int stringLength = s.length();
+
+        for(int i = 0; i < stringLength - wordsLength * num + 1; i++){
+
+            HashMap<String, Integer> seen = new HashMap<>();
             int j = 0;
-            while (j < arrayLength) {
-                final String word = s.substring(i + j * Charcount, i + (j + 1) * Charcount);
-                if (counts.containsKey(word)) {
-                    seen.put(word, seen.getOrDefault(word, 0) + 1);
-                    if (seen.get(word) > counts.getOrDefault(word, 0)) {
+
+            while (j < wordsLength){
+                String word = s.substring(i+j*num, i+(j+1)*num);
+                if(wordsMap.containsKey(word)){
+                    seen.put(word, seen.getOrDefault(word, 0)+1);
+                    if(seen.get(word) > wordsMap.getOrDefault(word, 0)){
                         break;
                     }
-                } else {
+                } else{
                     break;
                 }
                 j++;
             }
-            if (j == arrayLength) {
+            if(j == wordsLength){
                 indexes.add(i);
             }
         }
+
         return indexes;
     }
 
@@ -48,6 +53,6 @@ class LC11 {
         String s = "barfoothefoobarman";
         String[] words = { "foo", "bar" };
 
-        System.out.println(LC11.findSubstring(s, words));
-    }
+        System.out.println(L2C11.findSubstring(s, words));
+    }    
 }
