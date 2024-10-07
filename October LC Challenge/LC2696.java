@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 class LC2696 {
 
     public int minLength(String s) {
