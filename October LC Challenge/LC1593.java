@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class LC1593 {
 
     public int maxUniqueSplit(String s) {
